@@ -1,0 +1,3 @@
+nginx_install_dir : /usr/local/nginx
+nginx_tar_name : nginx-1.15.12.tar.gz
+nginx_dir_name : nginx-1.15.12

@@ -1,0 +1,12 @@
+---
+- name : copy gcc dir
+  copy : src="{{ local_roles_dir }}/basicparket/files/gcc" dest="{{ download_dir }}/" #将本地路径复制到远程服务器; 可以是绝对路径或相对的。如果是一个目录，它将被递归地复制。如果路径以/结尾，则只有该目录下内容被复制到目的地，如果没有使用/来结尾，则包含目录在内的整个内容全部复制
+  when : gcc_result is failed
+- name : install gcc
+  command : "rpm -Uvh {{ download_dir }}/gcc/*.rpm --nodeps --force" # 
+  when : gcc_result is failed
+- name : copy nginx_basic_parket dir
+  copy : src="{{ local_roles_dir }}/basicparket/files/nginx_basic_parket" dest="{{ download_dir }}/" 
+# rpm文件 = yum install -y pcre* openssl* zlib* 
+- name : install nginx_basic_parket
+  command : "rpm -Uvh {{ download_dir }}/nginx_basic_parket/*.rpm --nodeps --force" # 

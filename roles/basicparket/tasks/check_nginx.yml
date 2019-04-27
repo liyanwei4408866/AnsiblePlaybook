@@ -1,0 +1,5 @@
+---
+- name : check gcc
+  command : "gcc -v"
+  register : gcc_result
+  ignore_errors: True

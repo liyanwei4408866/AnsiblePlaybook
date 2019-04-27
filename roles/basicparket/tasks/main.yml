@@ -1,0 +1,7 @@
+---
+- include_tasks : check_nginx.yml
+  tages : 
+    - nginx
+- include_tasks : init_nginx.yml
+  tages : 
+    - nginx

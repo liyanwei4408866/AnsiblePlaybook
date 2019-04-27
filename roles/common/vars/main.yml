@@ -1,0 +1,5 @@
+#本地目录参数
+local_roles_dir : /opt/roles
+#远程目录参数
+download_dir : /opt/download
+app_dir : /opt/app

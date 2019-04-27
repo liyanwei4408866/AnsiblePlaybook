@@ -1,0 +1,21 @@
+---
+# 标准下载目录
+- name : check download_dir dir
+  command : "ls {{ download_dir }}"
+  register: download_dir_result
+  ignore_errors: True
+- name : create download_dir dir
+  file : 
+    path : "{{ download_dir }}"
+    state : directory
+  when : download_dir_result is failed
+# 标准应用安装目录
+- name : check app_dir dir
+  command : "ls {{ app_dir }}"
+  register: app_dir_result
+  ignore_errors: True
+- name : create app_dir dir
+  file : 
+    path : "{{ app_dir }}"
+    state : directory
+  when : app_dir_result is failed

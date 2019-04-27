@@ -1,0 +1,39 @@
+---
+# 解压到远端下载目录
+- name : unzip nginx
+  unarchive : src={{ nginx_tar_name }} dest={{ download_dir }}
+# 安装目录文件夹是否存在
+- name : check nginx install dir
+  command : "ls {{ nginx_install_dir }}"
+  register: nginx_install_dir_result
+  ignore_errors: True
+# 目录未找到则创建目录 认为未安装过
+- name : create nginx_install_dir dir
+  file : 
+    path : "{{ nginx_install_dir }}"
+    state : directory
+  when : nginx_install_dir_result is failed
+# 编译安装 指定相关参数
+- name : make install nginx
+  shell : cd {{ download_dir }}/{{ nginx_dir_name }}/ && ./configure --prefix={{ nginx_install_dir }} --sbin-path={{ nginx_install_dir }}/nginx --conf-path={{ nginx_install_dir }}/nginx.conf --pid-path={{ nginx_install_dir }}/nginx.pid --with-http_ssl_module --with-http_stub_status_module && make && make install
+# 创建缓存文件夹
+- name : create nginx cache dir
+  file : 
+    path : "{{ nginx_install_dir }}/cache"
+    state : directory
+# 放入自启动服务脚本
+- name : copy nginx to /etc/init.d/
+  copy : src=nginx dest=/etc/init.d/
+# 授予nginx文件运行权限
+- name : check nginx install dir
+  command : "chmod 755 /etc/init.d/nginx"
+# 放入测试页面
+- name : copy a test html
+  copy : src=index.html dest={{ nginx_install_dir }}/html/
+# 放入配置文件
+- name : copy nginx config file
+  template : src=test.conf dest={{ nginx_install_dir }}/nginx.conf
+  notify:
+    - restart nginx service # to handlers
+- name : ensure nginx service is running
+  service : name=nginx state=started

@@ -1,0 +1,13 @@
+nginx_basic_parket :
+  openssl : 
+    tarname : 'openssl-fips-2.0.16.tar.gz'
+    name : 'openssl-fips-2.0.16'
+    installdir : 'openssl-fips'
+  pcre : 
+    tarname : 'pcre-8.43.tar.gz'
+    name : 'pcre-8.43'
+    installdir : 'pcre'
+  zlib : 
+    tarname : 'zlib-1.2.11.tar.gz'
+    name : 'zlib-1.2.11'
+    installdir : 'zlib'
