@@ -23,7 +23,7 @@
     state : directory
 # 放入自启动服务脚本
 - name : copy nginx to /etc/init.d/
-  copy : src=nginx dest=/etc/init.d/
+  template : src=nginx dest=/etc/init.d/nginx
 # 授予nginx文件运行权限
 - name : check nginx install dir
   command : "chmod 755 /etc/init.d/nginx"
@@ -32,8 +32,13 @@
   copy : src=index.html dest={{ nginx_install_dir }}/html/
 # 放入配置文件
 - name : copy nginx config file
-  template : src=test.conf dest={{ nginx_install_dir }}/nginx.conf
+  template : src=nginx.conf dest={{ nginx_install_dir }}/nginx.conf
   notify:
     - restart nginx service # to handlers
 - name : ensure nginx service is running
   service : name=nginx state=started
+# 防火墙规则设置
+#1：/etc/sysconfig/iptables
+#2：-A INPUT -p tcp -dport 9090  -j ACCEPT
+#   -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+#3：service iptables restart #立即生效，重启后失效 #chkconfig iptables off #需要重启系统
